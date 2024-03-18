@@ -1,0 +1,15 @@
+#x-chrome-ext-floating {
+  position: absolute;
+  background: gray;
+  padding: 0.5rem;
+  color: white;
+  box-sizing: border-box;
+}
+
+#x-chrome-ext-floating-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: gray;
+  transform: rotate(45deg);
+}
