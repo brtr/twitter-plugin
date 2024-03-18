@@ -14,10 +14,10 @@ export default defineManifest({
     48: 'img/logo-48.png',
     128: 'img/logo-128.png',
   },
-  // action: {
-  //   default_popup: 'popup.html',
-  //   default_icon: 'img/logo-48.png',
-  // },
+  action: {
+    default_popup: 'popup.html',
+    default_icon: 'img/logo-48.png',
+  },
   // options_page: 'options.html',
   // devtools_page: 'devtools.html',
   background: {
@@ -26,7 +26,7 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: ['https://x.com/*', 'https://twitter.com/*', 'https://*.twitter.com/*'],
+      matches: ['http://*/*', 'https://*/*'],
       js: ['src/contentScript/index.js'],
     },
   ],

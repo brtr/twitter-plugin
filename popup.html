@@ -1,13 +1,24 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/icon/logo.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chrome Extension + Vanilla + JS + Vite</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/popup/index.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/icon/logo.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>X - Token Price</title>
+</head>
+
+<body>
+  <div id="app">
+    <main>
+      <h3>X Token Price</h3>
+      <div class="container">
+        <input type="password" id="cmc-api-token" placeholder="CoinMarketCap API Token" />
+        <button id="save-cmc-api-token">Save</button>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/src/popup/index.js"></script>
+</body>
+
 </html>
