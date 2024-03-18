@@ -6,7 +6,7 @@ import 'tippy.js/themes/material.css'
 console.info('contentScript is running')
 
 // Regular expression to match $ followed by uppercase letters and numbers
-const tickerPattern = /\$[A-Z0-9]+\b/;
+const tickerPattern = /\$[A-Za-z0-9]+\b/g;
 
 async function fetchPriceForTicker(ticker, callback) {
   chrome.runtime.sendMessage({ type: 'TICKER_INFO', ticker }, (response) => {
