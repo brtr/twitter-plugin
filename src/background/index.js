@@ -1,7 +1,8 @@
-console.log('background is running')
+import { getCache, setCache } from './cache'
 
 async function fetchRealtimePrice(ticker) {
   const symbol = ticker.replace('$', '').toUpperCase()
+
   return fetch(`https://sandbox-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=${symbol}`, {
     method: 'GET',
     headers: {
@@ -24,10 +25,18 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
   if (request.type === 'TICKER_INFO') {
     console.log('background has received a message from contentScript, and ticker info is ', request?.ticker)
-    fetchRealtimePrice(request?.ticker).then(data => {
-      console.log('TICKER_INFO', data)
-      sendResponse({ type: 'TICKER_INFO', ticker: request?.ticker, data: data })
-    }).catch(err => console.error(err))
+    const cacheKey = `TICKER_INFO_${request?.ticker}`
+    getCache(cacheKey, (data) => {
+      if (data) {
+        sendResponse({ type: 'TICKER_INFO', ticker: request?.ticker, data: data })
+      } else {
+        fetchRealtimePrice(request?.ticker).then(data => {
+          console.log('TICKER_INFO', data)
+          setCache(cacheKey, data, 360)
+          sendResponse({ type: 'TICKER_INFO', ticker: request?.ticker, data: data })
+        }).catch(err => console.error(err))
+      }
+    })
 
     return true
   }
