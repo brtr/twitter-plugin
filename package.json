@@ -30,6 +30,6 @@
     "vite": "^4.4.11"
   },
   "dependencies": {
-    "tippy.js": "^6.3.7"
+    "@floating-ui/dom": "^1.6.3"
   }
 }
