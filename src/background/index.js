@@ -1,4 +1,5 @@
-console.log('background is running')
+import { getCache, setCache } from './cache'
+import { fetchRealtimePrice } from './fetch'
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.type === 'COUNT') {
@@ -8,8 +9,19 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
   if (request.type === 'TICKER_INFO') {
     console.log('background has received a message from contentScript, and ticker info is ', request?.ticker)
-    sendResponse({ type: 'TICKER_INFO', ticker: request?.ticker, price: 100 })
+    const cacheKey = `TICKER_INFO_${request?.ticker}`
+    getCache(cacheKey, (data) => {
+      if (data) {
+        sendResponse({ type: 'TICKER_INFO', ticker: request?.ticker, data: data })
+      } else {
+        fetchRealtimePrice(request?.ticker).then(data => {
+          console.log('TICKER_INFO', data)
+          setCache(cacheKey, data, 360)
+          sendResponse({ type: 'TICKER_INFO', ticker: request?.ticker, data: data })
+        }).catch(err => console.error(err))
+      }
+    })
 
-    return
+    return true
   }
 })

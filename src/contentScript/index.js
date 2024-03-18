@@ -6,15 +6,13 @@ import 'tippy.js/themes/material.css'
 console.info('contentScript is running')
 
 // Regular expression to match $ followed by uppercase letters and numbers
-const tickerPattern = /\$[A-Z0-9]+\b/;
+const tickerPattern = /\$[A-Za-z0-9]+\b/g;
 
-function fetchPriceForTicker(ticker, callback) {
+async function fetchPriceForTicker(ticker, callback) {
   chrome.runtime.sendMessage({ type: 'TICKER_INFO', ticker }, (response) => {
     callback(response)
   })
 }
-
-const tippyInstances = [];
 
 document.addEventListener('mouseover', (event) => {
   const target = event.target
@@ -34,15 +32,22 @@ document.addEventListener('mouseover', (event) => {
       followCursor: true,
       onShow(instance) {
         fetchPriceForTicker(ticker, (response) => {
-          console.log('contentScript has received a message from background, and ticker info is ', response?.ticker, response?.price);
-          instance.setContent(`Price for ${ticker}: $${response?.price}`);
+          console.log('contentScript has received a message from background, and ticker info is ', response);
+          const info = response?.data[0];
+          instance.setContent(`Price for ${ticker}: $${info?.quote?.USD?.price}`);
+          // instance.setContent(`
+          //   <div>
+          //     <h3>${info?.name} (${info?.symbol})</h3>
+          //     <p>Price for ${ticker}: $${info?.quote?.USD?.price}</p>
+          //     <p>Platform: ${info?.platform?.name} (${info?.platform?.symbol})</p>
+          //     <p> Is active: ${info?.is_active}</p>
+          //     <p> Date added: ${info?.date_added}</p>
+          //     <p> Last updated: ${info?.last_updated}</p>
+          //   </div>
+          // `)
         });
-        tippyInstances.push(instance);
       }
     })
   }
-});
+})
 
-document.addEventListener('mouseout', (event) => {
-  tippyInstances.forEach(instance => instance.destroy());
-});
