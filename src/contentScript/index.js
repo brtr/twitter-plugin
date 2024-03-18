@@ -14,8 +14,6 @@ async function fetchPriceForTicker(ticker, callback) {
   })
 }
 
-const tippyInstances = [];
-
 document.addEventListener('mouseover', (event) => {
   const target = event.target
 
@@ -35,14 +33,21 @@ document.addEventListener('mouseover', (event) => {
       onShow(instance) {
         fetchPriceForTicker(ticker, (response) => {
           console.log('contentScript has received a message from background, and ticker info is ', response);
-          instance.setContent(`Price for ${ticker}: $${response?.data[0]?.quote?.USD?.price}`);
+          const info = response?.data[0];
+          instance.setContent(`Price for ${ticker}: $${info?.quote?.USD?.price}`);
+          // instance.setContent(`
+          //   <div>
+          //     <h3>${info?.name} (${info?.symbol})</h3>
+          //     <p>Price for ${ticker}: $${info?.quote?.USD?.price}</p>
+          //     <p>Platform: ${info?.platform?.name} (${info?.platform?.symbol})</p>
+          //     <p> Is active: ${info?.is_active}</p>
+          //     <p> Date added: ${info?.date_added}</p>
+          //     <p> Last updated: ${info?.last_updated}</p>
+          //   </div>
+          // `)
         });
-        tippyInstances.push(instance);
       }
     })
   }
-});
+})
 
-document.addEventListener('mouseout', (event) => {
-  tippyInstances.forEach(instance => instance.destroy());
-});
