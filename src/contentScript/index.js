@@ -67,8 +67,9 @@ document.addEventListener('mouseover', (event) => {
     fetchPriceForTicker(ticker, (response) => {
       console.log('contentScript has received a message from background, and ticker info is ', response);
       const info = response?.data[0];
-      const floatingContent =
-        `
+      if (info) {
+        const floatingContent =
+          `
         <div>
           <h3>${info?.name} (${info?.symbol})</h3>
           <p>Price for ${ticker}: $${info?.quote?.USD?.price}</p>
@@ -77,7 +78,8 @@ document.addEventListener('mouseover', (event) => {
           <p> Percent change in 7d: ${info?.quote?.USD?.percent_change_7d?.toFixed(4)}%</p>
         </div>
       `
-      updateUI(target, floatingContent)
+        updateUI(target, floatingContent)
+      }
     })
   }
 })
