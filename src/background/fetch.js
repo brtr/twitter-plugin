@@ -1,18 +1,11 @@
-function getApiToken() {
-  let apiToken = null
-  chrome.storage.sync.get(['CMC_API_TOKEN'], function(result) {
-    if (result.CMC_API_TOKEN) {
-      apiToken = result.CMC_API_TOKEN
-    } else {
-      console.log('No CMC_API_TOKEN found')
-    }
-  })
-  return apiToken
+async function getApiToken() {
+  const apiTokenResult = await chrome.storage.sync.get(['CMC_API_TOKEN'])
+  return apiTokenResult?.CMC_API_TOKEN
 }
 
 export async function fetchRealtimePrice(ticker) {
   const symbol = ticker.replace('$', '').toUpperCase()
-  const apiToken = getApiToken()
+  const apiToken = await getApiToken()
 
   return fetch(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=${symbol}`, {
     method: 'GET',
