@@ -72,9 +72,9 @@ document.addEventListener('mouseover', (event) => {
         <div>
           <h3>${info?.name} (${info?.symbol})</h3>
           <p>Price for ${ticker}: $${info?.quote?.USD?.price}</p>
-          <p> Percent change in 1h: ${info?.quote?.USD?.percent_change_1h}</p>
-          <p> Percent change in 24h: ${info?.quote?.USD?.percent_change_24h}</p>
-          <p> Percent change in 7d: ${info?.quote?.USD?.percent_change_7d}</p>
+          <p> Percent change in 1h: ${info?.quote?.USD?.percent_change_1h?.toFixed(4)}%</p>
+          <p> Percent change in 24h: ${info?.quote?.USD?.percent_change_24h?.toFixed(4)}%</p>
+          <p> Percent change in 7d: ${info?.quote?.USD?.percent_change_7d?.toFixed(4)}%</p>
         </div>
       `
       updateUI(target, floatingContent)
