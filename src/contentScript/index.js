@@ -85,6 +85,9 @@ document.addEventListener('mouseover', (event) => {
 })
 
 document.addEventListener('mouseout', () => {
-  document.getElementById('x-chrome-ext-floating').style.display = 'none'
-  document.getElementById('x-chrome-ext-floating-content').textContent = 'Fetching ...'
+  const floating = document.getElementById('x-chrome-ext-floating')
+  if (floating) {
+    floating.style.display = 'none'
+    document.getElementById('x-chrome-ext-floating-content').textContent = 'Fetching ...'
+  }
 })
