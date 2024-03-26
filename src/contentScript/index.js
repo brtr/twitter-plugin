@@ -10,6 +10,12 @@ async function fetchPriceForTicker(ticker, callback) {
   })
 }
 
+async function fetchSpotTxnsForTicker(ticker, callback) {
+  chrome.runtime.sendMessage({ type: 'SPOT_AGGREGATE_TXNS', ticker }, (response) => {
+    callback(response)
+  })
+}
+
 function createFloatingUI() {
   // Create the floating UI
   const floating = document.createElement('div')
@@ -76,9 +82,25 @@ document.addEventListener('mouseover', (event) => {
           <p> Percent change in 1h: ${info?.quote?.USD?.percent_change_1h?.toFixed(4)}%</p>
           <p> Percent change in 24h: ${info?.quote?.USD?.percent_change_24h?.toFixed(4)}%</p>
           <p> Percent change in 7d: ${info?.quote?.USD?.percent_change_7d?.toFixed(4)}%</p>
+          <div id="x-chrome-ext-floating-content-spot-txn"></div>
         </div>
       `
         updateUI(target, floatingContent)
+      }
+    })
+
+    fetchSpotTxnsForTicker(ticker, (response) => {
+      console.log('contentScript has received a message from background, and spot txns are ', response);
+      const txn = response?.data;
+      const txnContent = document.getElementById('x-chrome-ext-floating-content-spot-txn')
+      if (txn && txnContent) {
+        txnContent.innerHTML =
+          `
+            <p>${txn.original_symbol}</p>
+            <p>Quantity: ${txn.qty}</p>
+            <p>${txn.price}</p>
+            <p>${txn.roi}</p>
+          `
       }
     })
   }
