@@ -97,15 +97,14 @@ document.addEventListener('mouseover', (event) => {
       `
         updateUI(target, floatingContent)
       }
-    })
-
-    fetchSpotTxnsForTicker(ticker, (response) => {
-      console.log('contentScript has received a message from background, and spot txns are ', response);
-      const txn = response?.data;
-      const txnContent = document.getElementById('x-chrome-ext-floating-content-spot-txn')
-      if (txn && txnContent) {
-        txnContent.innerHTML =
-          `
+    }).then(() => {
+      fetchSpotTxnsForTicker(ticker, (response) => {
+        console.log('contentScript has received a message from background, and spot txns are ', response);
+        const txn = response?.data;
+        const txnContent = document.getElementById('x-chrome-ext-floating-content-spot-txn')
+        if (txn && txnContent) {
+          txnContent.innerHTML =
+            `
             <h3>Spot Trades: ${txn.original_symbol}</h3>
             <p>Cost Price: ${txn.price} ${txn.to_symbol}</p>
             <p>Quantity: ${txn.qty}</p>
@@ -113,7 +112,8 @@ document.addEventListener('mouseover', (event) => {
             <p>Estimated ROI: ${convertToPercentage(txn.roi)}%</p>
             <p>Last Trade At: ${txn.last_trade_at}</p>
           `
-      }
+        }
+      })
     })
   }
 })
