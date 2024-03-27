@@ -5,7 +5,7 @@
 #### Install the X Token Price Chrome Extension
 > Since version 75.x, Chrome requires Google's web store signature on extension files. This means that you can't install the extension by just downloading the files and dragging them into the `chrome://extensions` page. You can still install the extension manually by enabling developer mode in the `chrome://extensions` page and then clicking on the `Load unpacked` button. This will allow you to select the extension's folder and install it.
 
-- Download the extension's file `x-token-price-beta.zip` from the [releases page](https://github.com/brtr/twitter-plugin/releases/tag/v0.0.0.Beta)
+- Download the extension's file `x-token-price-beta.zip` from the [releases page](https://github.com/brtr/twitter-plugin/releases)
 - Unzip the files
 - Open the `chrome://extensions` page
 - Enable developer mode
