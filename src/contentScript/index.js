@@ -16,6 +16,13 @@ async function fetchSpotTxnsForTicker(ticker, callback) {
   })
 }
 
+function convertToPercentage(value) {
+  if (typeof valueStr === "string") {
+    value = parseFloat(valueStr)
+  }
+  return (value * 100).toFixed(4)
+}
+
 function createFloatingUI() {
   // Create the floating UI
   const floating = document.createElement('div')
@@ -77,11 +84,14 @@ document.addEventListener('mouseover', (event) => {
         const floatingContent =
           `
         <div>
-          <h3>${info?.name} (${info?.symbol})</h3>
-          <p>Price for ${ticker}: $${info?.quote?.USD?.price}</p>
-          <p> Percent change in 1h: ${info?.quote?.USD?.percent_change_1h?.toFixed(4)}%</p>
-          <p> Percent change in 24h: ${info?.quote?.USD?.percent_change_24h?.toFixed(4)}%</p>
-          <p> Percent change in 7d: ${info?.quote?.USD?.percent_change_7d?.toFixed(4)}%</p>
+          <div>
+            <h3>${info?.name} (${info?.symbol})</h3>
+            <p>Price for ${ticker}: $${info?.quote?.USD?.price}</p>
+            <p> Percent change in 1h: ${info?.quote?.USD?.percent_change_1h?.toFixed(4)}%</p>
+            <p> Percent change in 24h: ${info?.quote?.USD?.percent_change_24h?.toFixed(4)}%</p>
+            <p> Percent change in 7d: ${info?.quote?.USD?.percent_change_7d?.toFixed(4)}%</p>
+            <hr />
+          </div>
           <div id="x-chrome-ext-floating-content-spot-txn"></div>
         </div>
       `
@@ -96,10 +106,12 @@ document.addEventListener('mouseover', (event) => {
       if (txn && txnContent) {
         txnContent.innerHTML =
           `
-            <p>${txn.original_symbol}</p>
+            <h3>Spot Trades: ${txn.original_symbol}</h3>
+            <p>Cost Price: ${txn.price} ${txn.to_symbol}</p>
             <p>Quantity: ${txn.qty}</p>
-            <p>${txn.price}</p>
-            <p>${txn.roi}</p>
+            <p>Estimated Revenue: ${txn.revenue} ${txn.to_symbol}</p>
+            <p>Estimated ROI: ${convertToPercentage(txn.roi)}%</p>
+            <p>Last Trade At: ${txn.last_trade_at}</p>
           `
       }
     })
