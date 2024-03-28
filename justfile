@@ -1,5 +1,5 @@
 version := `node -p "require('./package.json').version"`
-release_folder := "x-token-price@" + version
+release_folder := "x-token-price@v" + version
 
 build:
   pnpm run build
