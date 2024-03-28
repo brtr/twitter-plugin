@@ -107,7 +107,8 @@ document.addEventListener('mouseover', (event) => {
             `
             <h3>Spot Trades: ${txn.original_symbol}</h3>
             <p>Cost Price: ${txn.price} ${txn.to_symbol}</p>
-            <p>Quantity: ${txn.qty}</p>
+            <p>Current Holdings: ${txn.qty} ${txn.from_symbol}</p>
+            <p>Total Invested: ${txn.amount} ${txn.to_symbol}</p>
             <p>Estimated Revenue: ${txn.revenue} ${txn.to_symbol}</p>
             <p>Estimated ROI: ${convertToPercentage(txn.roi)}%</p>
             <p>Last Trade At: ${txn.last_trade_at}</p>
